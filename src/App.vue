@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import { invoke } from "@tauri-apps/api/core"
+import { ref } from 'vue'
+import { invoke } from '@tauri-apps/api/core'
+import { fetch } from '@tauri-apps/plugin-http'
 
 const greetMsg = ref("")
 const name = ref("")
 
 async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
   greetMsg.value = await invoke("greet", { name: name.value })
+
+  const res = await fetch("https://www.qq.com")
+  const content = await res.text()
+  console.log(content)
 }
 </script>
 
@@ -26,7 +30,6 @@ async function greet() {
         <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
       </a>
     </div>
-    <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
 
     <form class="row" @submit.prevent="greet">
       <input id="greet-input" v-model="name" placeholder="Enter a name..." />
